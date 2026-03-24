@@ -13,6 +13,7 @@ This project is **beginner-friendly** and helps understand how to integrate the 
 ## Features
 
 - 📝 Markdown-First Blogging — Write `.md` files, get a full blog
+- ⚡ SQLite Index — Fast search, pagination, sorting & filtering
 - 🖼️ Automatic Image Optimization — Auto compress, resize & responsive `srcset`
 - 🔍 SEO Optimized — Auto meta tags, JSON-LD, OpenGraph images
 - 📋 Dynamic Table of Contents — Auto-generated from headings
@@ -42,13 +43,13 @@ This project is **beginner-friendly** and helps understand how to integrate the 
 ## How It Works
 
 ```
-Tu .md file lakhe  →  Prezet scan kare  →  SQLite ma index thay  →  Blog post ready! 🎉
+Write .md file  →  Prezet scans it  →  Indexed in SQLite  →  Blog post is live! 🎉
 ```
 
 1. Write a `.md` file inside `content/posts/` with front matter (title, date, etc.)
-2. Run `php artisan prezet:index --fresh` to index all posts
-3. Visit `/prezet` — your blog is live!
-4. Content changes in body are reflected automatically; run index only when front matter changes
+2. Run `php artisan prezet:index --fresh` to index all posts into SQLite.
+3. Visit `/prezet` — your blog listing is live!
+4. Body content changes reflect automatically; only re-index when front matter changes.
 
 ---
 
@@ -64,7 +65,7 @@ Open terminal / CMD and run:
 composer create-project laravel/laravel PHP_Laravel12_Prezet "12.*"
 ```
 
-Go inside project:
+Go inside the project folder:
 
 ```bash
 cd PHP_Laravel12_Prezet
@@ -109,7 +110,7 @@ Then run:
 php artisan migrate
 ```
 
-> Connects Laravel with MySQL and creates default tables.
+> Connects Laravel with MySQL and creates the default tables.
 
 ---
 
@@ -131,7 +132,7 @@ composer require prezet/blog-template --dev
 php artisan blog-template:install
 ```
 
-> Installs the ready-made blog frontend — routes, controllers, views, and CSS all set up automatically.
+> Installs the ready-made blog frontend — routes, controllers, views, and CSS are all set up automatically.
 
 ---
 
@@ -142,7 +143,7 @@ npm install
 npm run build
 ```
 
-> Compiles Tailwind CSS and JS assets using Vite + esbuild.
+> Compiles Tailwind CSS and JavaScript assets using Vite and esbuild.
 
 ---
 
@@ -161,7 +162,7 @@ return [
 
     'disks' => [
 
-        // Prezet disk — points to project root to access content/ folder
+        // Prezet disk — points to project root to access the content/ folder
         'prezet' => [
             'driver' => 'local',
             'root'   => base_path(),
@@ -254,12 +255,12 @@ return [
                 'aria_hidden'         => false,
             ],
             'external_link' => [
-                'internal_hosts'  => env('APP_URL', 'localhost'),
+                'internal_hosts'     => env('APP_URL', 'localhost'),
                 'open_in_new_window' => true,
-                'html_class'      => 'external-link',
-                'nofollow'        => 'external',
-                'noopener'        => 'external',
-                'noreferrer'      => 'external',
+                'html_class'         => 'external-link',
+                'nofollow'           => 'external',
+                'noopener'           => 'external',
+                'noreferrer'         => 'external',
             ],
             'phiki' => [
                 'theme'        => \Phiki\Theme\Theme::NightOwl,
@@ -270,8 +271,8 @@ return [
     ],
 
     'image' => [
-        'widths' => [480, 640, 768, 960, 1536],
-        'sizes'  => '92vw, (max-width: 1024px) 92vw, 768px',
+        'widths'   => [480, 640, 768, 960, 1536],
+        'sizes'    => '92vw, (max-width: 1024px) 92vw, 768px',
         'zoomable' => true,
     ],
 
@@ -332,7 +333,7 @@ return [
 ];
 ```
 
-> Registers the Prezet service provider so all its features are available in the app.
+> Registers the Prezet service provider so all its features are available in the application.
 
 ---
 
@@ -361,13 +362,13 @@ Route::prefix('prezet')->group(function () {
 require __DIR__.'/prezet.php';
 ```
 
-> Defines routes for blog index, single post view, and image serving.
+> Defines routes for the blog index page, single post view, and image serving.
 
 ---
 
-### STEP 10: Create Blog Post (Markdown Files)
+### STEP 10: Create Blog Posts (Markdown Files)
 
-Create folder structure:
+Create the following folder structure:
 
 ```
 content/
@@ -390,20 +391,20 @@ author: "prezet"
 
 # Hello Developers! 🚀
 
-Welcome to my first official technical blog post! I am excited to share my journey of building 
+Welcome to my first official technical blog post! I am excited to share my journey of building
 this modern blogging platform using **Laravel 12** and the **Prezet** package.
 
 ### Why I chose Prezet?
 
-Setting up a traditional blog often involves managing complex databases and building heavy admin 
-panels. However, Prezet simplifies this by transforming **Markdown** files into high-performance 
+Setting up a traditional blog often involves managing complex databases and building heavy admin
+panels. However, Prezet simplifies this by transforming **Markdown** files into high-performance
 web pages.
 
 ### What makes this setup special?
 
 * **Markdown-First Workflow:** Writing content is now as simple as editing a text file.
-* **Blazing Fast Performance:** File-based content = zero database overhead.
-* **Developer-Centric:** Version control your blog posts using Git.
+* **Blazing Fast Performance:** File-based content means zero database overhead.
+* **Developer-Centric:** Version control your blog posts using Git, just like application code.
 * **SEO Optimized:** Out-of-the-box JSON-LD, OpenGraph tags, and sitemaps.
 ```
 
@@ -421,12 +422,12 @@ author: "prezet"
 
 # The Future of Artificial Intelligence: Beyond the Buzzwords 🤖
 
-Artificial Intelligence (AI) is no longer a concept from science fiction movies. It is here, 
+Artificial Intelligence (AI) is no longer a concept from science fiction movies. It is here,
 and it is fundamentally changing how we live, work, and communicate.
 
 ### What is Artificial Intelligence?
 
-At its core, AI is a branch of computer science that aims to create systems capable of 
+At its core, AI is a branch of computer science that aims to create systems capable of
 performing tasks that normally require human intelligence. This includes things like:
 - **Visual perception** (identifying objects)
 - **Speech recognition** (translating spoken words)
@@ -439,10 +440,10 @@ performing tasks that normally require human intelligence. This includes things 
 Machine Learning is the process where computers learn from data without being explicitly programmed.
 
 #### 2. Deep Learning
-A subset of ML based on **Artificial Neural Networks**. Powers self-driving cars and facial recognition.
+A subset of ML based on **Artificial Neural Networks**. It powers self-driving cars and facial recognition.
 
 #### 3. Natural Language Processing (NLP)
-Allows machines to understand human language. Powers **ChatGPT**, **Siri**, and **Google Assistant**.
+Allows machines to understand human language. This powers **ChatGPT**, **Siri**, and **Google Assistant**.
 
 ### Conclusion: Looking Ahead
 
@@ -451,7 +452,7 @@ AI is not here to replace humans, but to **augment** our capabilities.
 **Are you ready for the AI revolution?**
 ```
 
-> Each markdown file has **front matter** (between `---`) that defines title, date, description, category, image, and author.
+> Each markdown file requires **front matter** (the section between `---`) that defines the title, date, description, category, image, and author of the post.
 
 ---
 
@@ -463,14 +464,14 @@ After adding or modifying markdown files, run:
 php artisan prezet:index --fresh
 ```
 
-> This scans all `.md` files and rebuilds the SQLite index.
-> Run this command whenever you: add new posts, rename files, or change front matter.
+> This command scans all `.md` files and rebuilds the SQLite index from scratch.
+> Run this command whenever you: add new posts, rename files, or modify front matter values.
 
 ---
 
-### STEP 12: Run the App
+### STEP 12: Run the Application
 
-Start dev server:
+Start the development server:
 
 ```bash
 php artisan serve
@@ -479,9 +480,22 @@ php artisan serve
 Open in browser:
 
 ```
-http://127.0.0.1:8000          →  Home page
+http://127.0.0.1:8000          →  Laravel home page
 http://127.0.0.1:8000/prezet   →  Blog listing page
 ```
+
+---
+
+## Screenshots
+
+### Blog Listing Page
+<img width="1893" height="910" alt="Blog Listing" src="https://github.com/user-attachments/assets/77c07cba-949a-4bd5-b052-88718ba16766" />
+
+### Single Post View
+<img width="1894" height="909" alt="Single Post" src="https://github.com/user-attachments/assets/b57879c6-4407-4fa2-90a6-fe774aa82125" />
+
+### Post Detail
+<img width="1896" height="912" alt="Post Detail" src="https://github.com/user-attachments/assets/30e3eccd-c2b1-427c-98e5-75ebd4a60111" />
 
 ---
 
@@ -502,12 +516,12 @@ author: "prezet"
 
 | Field | Required | Description |
 |---|---|---|
-| `title` | ✅ | Post title shown in listing and `<title>` tag |
-| `date` | ✅ | Publication date (`YYYY-MM-DD`) |
-| `description` | ✅ | SEO meta description |
-| `category` | ✅ | Used for filtering posts |
-| `image` | ✅ | OG image path for social sharing |
-| `author` | ✅ | Must match a key in `config/prezet.php` authors |
+| `title` | ✅ | Post title shown in listing and browser `<title>` tag |
+| `date` | ✅ | Publication date in `YYYY-MM-DD` format |
+| `description` | ✅ | SEO meta description shown in search results |
+| `category` | ✅ | Used for filtering and grouping posts |
+| `image` | ✅ | OpenGraph image path used for social media sharing |
+| `author` | ✅ | Must match a key defined in `config/prezet.php` authors section |
 
 ---
 
@@ -521,10 +535,6 @@ author: "prezet"
 | `http://127.0.0.1:8000/prezet/posts/the-future-of-artificial-intelligence` | Single post view |
 
 ---
-<img width="1893" height="910" alt="Screenshot 2026-03-24 105405" src="https://github.com/user-attachments/assets/77c07cba-949a-4bd5-b052-88718ba16766" />
-<img width="1894" height="909" alt="Screenshot 2026-03-24 105509" src="https://github.com/user-attachments/assets/b57879c6-4407-4fa2-90a6-fe774aa82125" />
-<img width="1896" height="912" alt="Screenshot 2026-03-24 110856" src="https://github.com/user-attachments/assets/30e3eccd-c2b1-427c-98e5-75ebd4a60111" />
-
 
 ## Project Folder Structure
 
@@ -543,25 +553,25 @@ PHP_Laravel12_Prezet/
 │   ├── filesystems.php            ← prezet disk configured here
 │   └── ...
 │
-├── content/                       ← All markdown content lives here
+├── content/                       ← All markdown blog posts live here
 │   └── posts/
 │       ├── my-first-laravel-blog.md
 │       └── the-future-of-artificial-intelligence.md
 │
 ├── prezet/                        ← Prezet internal folder (auto-generated)
-│   └── content/                   ← Sample/testing content
+│   └── content/
 │       └── images/                ← Author images (bob.webp, jane.webp)
 │
 ├── public/
 │   ├── storage/
-│   │   └── prezet/img/            ← Optimized images served here
+│   │   └── prezet/img/            ← Optimized images served from here
 │   └── index.php
 │
 ├── resources/
 │   ├── css/
 │   ├── js/
 │   └── views/
-│       ├── prezet/                ← Prezet blade views
+│       ├── prezet/                ← Prezet blade views (auto-installed)
 │       │   ├── index.blade.php
 │       │   ├── show.blade.php
 │       │   ├── category.blade.php
@@ -570,12 +580,12 @@ PHP_Laravel12_Prezet/
 │       └── components/
 │
 ├── routes/
-│   ├── web.php                    ← Main routes + prezet prefix group
+│   ├── web.php                    ← Main routes with prezet prefix group
 │   └── prezet.php                 ← Auto-generated by Prezet installer
 │
 ├── storage/
 │   └── prezet/
-│       └── prezet.sqlite          ← SQLite index for all posts
+│       └── prezet.sqlite          ← SQLite index database for all posts
 │
 ├── .env
 ├── artisan
@@ -590,10 +600,10 @@ PHP_Laravel12_Prezet/
 
 | Command | Purpose |
 |---|---|
-| `php artisan prezet:install` | Install Prezet framework |
-| `php artisan prezet:index --fresh` | Rebuild SQLite index from scratch |
-| `php artisan prezet:index` | Update index (add/remove posts) |
-| `php artisan serve` | Start local dev server |
+| `php artisan prezet:install` | Install the Prezet framework into the project |
+| `php artisan prezet:index --fresh` | Rebuild the SQLite index from scratch |
+| `php artisan prezet:index` | Update the index when posts are added or removed |
+| `php artisan serve` | Start the local development server |
 | `npm run build` | Build frontend assets for production |
 | `npm run dev` | Watch and compile assets during development |
 
