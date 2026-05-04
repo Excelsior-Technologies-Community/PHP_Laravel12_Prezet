@@ -52,7 +52,7 @@ return [
             League\CommonMark\Extension\FrontMatter\FrontMatterExtension::class,
             Prezet\Prezet\Extensions\MarkdownBladeExtension::class,
             Prezet\Prezet\Extensions\MarkdownImageExtension::class,
-            Phiki\CommonMark\PhikiExtension::class,
+            // Phiki\CommonMark\PhikiExtension::class,
         ],
 
         'config' => [
@@ -96,7 +96,9 @@ return [
     | 'sizes' indicates the sizes attribute for responsive images.
     | 'zoomable' determines if images are zoomable.
     */
-
+'database' => [
+    'connection' => env('DB_CONNECTION', 'mysql'),
+],
     'image' => [
 
         'widths' => [

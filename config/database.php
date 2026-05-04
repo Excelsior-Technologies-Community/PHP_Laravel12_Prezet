@@ -32,11 +32,12 @@ return [
 
     'connections' => [
         'prezet' => [
-            'driver' => 'sqlite',
-            'database' => base_path('database/prezet.sqlite'),
-            'prefix' => '',
-            'foreign_key_constraints' => true,
-        ],
+            'driver' => 'mysql',
+                'host' => env('DB_HOST'),
+                'database' => env('DB_DATABASE'),
+                'username' => env('DB_USERNAME'),
+                'password' => env('DB_PASSWORD'),
+                    ],
 
         'sqlite' => [
             'driver' => 'sqlite',

@@ -5,7 +5,7 @@
         'url' => route('prezet.show', ['slug' => $document->slug]),
         'image' => url($document->frontmatter->image),
     ])
-
+<h1>{{ $document->title }}</h1>
     <x-prezet.alpine>
         <div class="mx-auto max-w-5xl space-y-8">
             <div class="">
@@ -45,7 +45,13 @@
                         :author="config('prezet.authors.' . $post->frontmatter->author)"
                     />
                 @endforeach
+                @foreach($docs as $doc)
+                <a href="/prezet/{{ $doc->slug }}">
+                    {{ $doc->title }}
+                </a>
+            @endforeach
             </div>
+            
         </div>
     </x-prezet.alpine>
 </x-prezet.template>
