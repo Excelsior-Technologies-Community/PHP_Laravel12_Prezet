@@ -1,17 +1,15 @@
 @php
-    /* @var string $body */
-    /* @var array $nav */
-    /* @var array $headings */
-    /* @var string $linkedData */
-    /* @var \Prezet\Prezet\Data\DocumentData $document */
-@endphp
 
-@php
+    use App\Models\Like;
+
     $authorKey = $document->frontmatter->author ?? null;
-@endphp
 
-@php
-    $author = $authorKey ? config('prezet.authors.' . $authorKey) : null;
+    $author = $authorKey
+        ? config('prezet.authors.' . $authorKey)
+        : null;
+
+    $totalLikes = Like::where('document_id', $document->id)->count();
+
 @endphp
 
 <x-prezet.template>
@@ -23,118 +21,101 @@
         'image' => $document->frontmatter->image ?? asset('default.png'),
     ])
 
-    @push('jsonld')
-        <script type="application/ld+json">
-            {!! $linkedData !!}
-        </script>
-    @endpush
+    <div class="max-w-3xl mx-auto py-10">
 
-    <x-prezet.alpine>
-        <div class="grid grid-cols-12 gap-8">
+        {{-- TITLE --}}
+        <h1 class="text-3xl font-bold dark:text-white">
+            {{ $document->frontmatter->title ?? '' }}
+        </h1>
 
-            {{-- HEADER --}}
-            <div class="col-span-12 xl:col-span-10 xl:col-start-2 2xl:col-span-6 2xl:col-start-4">
+        {{-- AUTHOR + DATE --}}
+        <div class="flex items-center gap-3 mt-2 text-gray-500">
 
-                <li class="flex items-center dark:text-white">
-                    @if(!empty($document->category))
-                        <a href="#">
-                            {{ $document->category }}
-                        </a>
-                    @endif
-                </li>
+            <span>
+                {{ $author['name'] ?? 'Unknown Author' }}
+            </span>
 
-                <h1 class="mb-6 text-3xl font-bold dark:text-white">
-                    {{ $document->frontmatter->title ?? 'No Title' }}
-                </h1>
+            <span>•</span>
 
-                {{-- AUTHOR --}}
-                <ul class="flex flex-wrap items-center gap-3 font-medium">
-
-                    <li class="w-full sm:w-auto dark:text-white">
-                        <a href="#author" class="flex items-center gap-x-2">
-
-                            <img
-                                src="{{ $author['image'] ?? asset('default.png') }}"
-                                alt="{{ $author['name'] ?? 'Author' }}"
-                                width="26"
-                                height="26"
-                                class="h-[26px] w-[26px] rounded object-cover"
-                            />
-
-                            <span>
-                                {{ $author['name'] ?? 'Unknown Author' }}
-                            </span>
-
-                        </a>
-                    </li>
-
-                    <li class="hidden sm:inline-block text-gray-500">—</li>
-
-                    <li class="flex items-center gap-1 text-gray-500">
-                        <span>
-                            {{ $document->frontmatter->date ?? date('Y-m-d') }}
-                        </span>
-                    </li>
-
-                </ul>
-            </div>
-
-            {{-- LINE --}}
-            <div class="col-span-12 xl:col-span-10 xl:col-start-2 2xl:col-span-8 2xl:col-start-4">
-                <div class="h-px w-full bg-gray-200 dark:bg-gray-700"></div>
-            </div>
-
-            {{-- MAIN CONTENT --}}
-            <div class="col-span-12 lg:col-span-9">
-
-                <article class="prose max-w-none dark:prose-invert">
-                    {!! $body !!}
-                </article>
-
-                {{-- TAGS --}}
-                @if(!empty($document->frontmatter->tags))
-                    <div class="mt-10 border-t pt-6">
-                        <ul class="flex flex-wrap gap-2">
-
-                            @foreach($document->frontmatter->tags as $tag)
-                                <li>
-                                    <a href="#"
-                                       class="px-3 py-1 text-xs bg-gray-100 rounded">
-                                        {{ $tag }}
-                                    </a>
-                                </li>
-                            @endforeach
-
-                        </ul>
-                    </div>
-                @endif
-
-                {{-- AUTHOR BOX --}}
-                <div id="author"
-                     class="mt-10 flex flex-col md:flex-row gap-6 p-6 bg-gray-50 dark:bg-gray-800 rounded">
-
-                    <img
-                        src="{{ $author['image'] ?? asset('default.png') }}"
-                        class="w-24 h-24 rounded object-cover"
-                    />
-
-                    <div>
-
-                        <h3 class="text-xl font-semibold">
-                            {{ $author['name'] ?? 'Unknown Author' }}
-                        </h3>
-
-                        <p class="text-gray-600 dark:text-gray-300 mt-2">
-                            {{ $author['bio'] ?? 'No bio available' }}
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <span>
+                {{ $document->frontmatter->date ?? date('Y-m-d') }}
+            </span>
 
         </div>
-    </x-prezet.alpine>
+
+        {{-- CONTENT --}}
+        <article class="prose dark:prose-invert mt-6 max-w-none">
+            {!! $body !!}
+        </article>
+
+        {{-- TAGS --}}
+        @if(!empty($document->frontmatter->tags))
+
+            <div class="mt-6 flex flex-wrap gap-2">
+
+                @foreach($document->frontmatter->tags as $tag)
+
+                    <span class="bg-gray-200 dark:bg-gray-700 px-3 py-1 text-xs rounded">
+
+                        {{ $tag }}
+
+                    </span>
+
+                @endforeach
+
+            </div>
+
+        @endif
+
+        {{-- LIKE BUTTON --}}
+        <div class="mt-10">
+
+            <form action="{{ route('like.store') }}" method="POST">
+
+                @csrf
+
+                <input
+                    type="hidden"
+                    name="document_id"
+                    value="{{ $document->id }}"
+                >
+
+                <button
+                    type="submit"
+                    class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded"
+                >
+                    ❤️ Like
+                </button>
+
+            </form>
+
+            {{-- TOTAL LIKES --}}
+            <p class="mt-3 text-gray-600 dark:text-gray-300">
+
+                Total Likes:
+                <strong>{{ $totalLikes }}</strong>
+
+            </p>
+
+        </div>
+
+        {{-- AUTHOR BOX --}}
+        <div class="mt-10 p-5 bg-gray-100 dark:bg-gray-800 rounded">
+
+            <h3 class="font-bold text-lg dark:text-white">
+
+                {{ $author['name'] ?? 'Author' }}
+
+            </h3>
+
+            <p class="text-gray-600 dark:text-gray-300 mt-2">
+
+                {{ $author['bio'] ?? 'No bio available' }}
+
+            </p>
+
+        </div>
+
+    </div>
 
 </x-prezet.template>

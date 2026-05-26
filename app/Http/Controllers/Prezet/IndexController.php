@@ -36,7 +36,7 @@ class IndexController
 
         $currentAuthor = config('prezet.authors.'.$author);
 
-        $docs = $query->orderBy('created_at', 'desc')->get();
+       $docs = $query->orderBy('created_at', 'desc')->paginate(3);
 
         $docsData = $docs->map(fn (Document $doc) => app(DocumentData::class)::fromModel($doc));
 

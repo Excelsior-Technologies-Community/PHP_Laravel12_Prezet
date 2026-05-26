@@ -4,77 +4,123 @@
 ])
 
 <article
-    class="rounded-lg bg-zinc-50 p-6 text-zinc-900 ring-1 ring-zinc-500/10 transition-colors ring-inset hover:border-zinc-200 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700 dark:hover:border-zinc-700"
+    class="group relative overflow-hidden rounded-3xl border border-white/10 bg-[#111111]/90 p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/40 hover:shadow-blue-500/10"
 >
-    <div class="space-y-3">
-        <div class="text-muted-foreground text-sm">
-            @if ($article->category)
-                <a
-                    href="{{ route('prezet.show', ['slug' => strtolower($article->category)]) }}"
-                    class="font-medium text-zinc-900 transition-all hover:opacity-75 dark:text-white"
-                >
-                    {{ $article->category }}
-                </a>
-            @endif
-        </div>
 
-        <h2
-            class="text-xl leading-tight font-semibold transition-colors duration-200 hover:opacity-75 dark:text-white"
-        >
-            <a href="{{ route('prezet.show', $article->slug) }}">
-                {{ $article->frontmatter->title }}
-            </a>
-        </h2>
+    {{-- GLOW EFFECT --}}
+    <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 transition duration-500 group-hover:opacity-100"
+    ></div>
 
-        <p class="text-muted-foreground dark:text-zinc-400">
-            {{ $article->frontmatter->excerpt }}
-        </p>
+    {{-- CATEGORY --}}
+    @if ($article->category)
 
-        <div
-            class="text-muted-foreground flex items-center gap-2 text-sm dark:text-zinc-400"
-        >
+        <div class="relative z-10 mb-5">
+
             <a
-                href="{{ route('prezet.index', ['author' => strtolower($article->frontmatter->author)]) }}"
-                class="group flex items-center gap-2"
+                href="{{ route('prezet.show', ['slug' => strtolower($article->category)]) }}"
+                class="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-blue-400 transition hover:bg-blue-500/20"
             >
-                <div
-                    class="flex h-6 w-6 items-center justify-center overflow-hidden rounded"
-                >
-                    <img
-                        src="{{ $author['image'] ?? '' }}"
-                        alt="{{ $post->author->name ?? 'Author' }}"
-                        class="h-full w-full rounded bg-zinc-100 object-cover transition-all duration-300 group-hover:opacity-75 dark:bg-zinc-800"
-                    />
-                </div>
-                <span
-                    class="group-hover:text-primary transition-all duration-300 dark:group-hover:text-zinc-300"
-                >
-                    {{ $author['name'] ?? 'Anonymous' }}
-                </span>
+                {{ $article->category }}
             </a>
 
-            <span>—</span>
-
-            <div class="flex items-center gap-1">
-                <x-prezet.icon-calendar class="size-3.5" />
-
-                <time datetime="{{ $article->createdAt->toIso8601String() }}">
-                    {{ $article->createdAt->format('F j, Y') }}
-                </time>
-            </div>
         </div>
 
-        <div class="flex flex-wrap gap-2 pt-1">
+    @endif
+
+
+    {{-- TITLE --}}
+    <h2
+        class="relative z-10 text-3xl font-extrabold leading-tight tracking-tight text-white transition group-hover:text-blue-400"
+    >
+
+        <a href="{{ route('prezet.show', $article->slug) }}">
+
+            {{ $article->frontmatter->title }}
+
+        </a>
+
+    </h2>
+
+
+    {{-- EXCERPT --}}
+    <p
+        class="relative z-10 mt-5 text-[15px] leading-8 text-gray-400"
+    >
+
+        {{ $article->frontmatter->excerpt }}
+
+    </p>
+
+
+    {{-- TAGS --}}
+    @if (!empty($article->frontmatter->tags))
+
+        <div class="relative z-10 mt-6 flex flex-wrap gap-2">
+
             @foreach ($article->frontmatter->tags as $tag)
+
                 <a
                     href="{{ route('prezet.index', ['tag' => strtolower($tag)]) }}"
-                    class="inline-flex items-center rounded-md bg-zinc-50 px-3 py-1 text-xs text-zinc-800 ring-1 ring-zinc-500/10 transition ring-inset hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-200 dark:ring-zinc-700 dark:hover:bg-zinc-600"
+                    class="rounded-full border border-white/10 bg-[#1a1a1a] px-3 py-1 text-xs font-semibold text-gray-300 transition hover:border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-400"
                 >
-                    <x-prezet.icon-tag class="mr-1 h-3 w-3" />
-
-                    {{ $tag }}
+                    #{{ $tag }}
                 </a>
+
             @endforeach
+
         </div>
+
+    @endif
+
+
+    {{-- AUTHOR + BUTTON --}}
+    <div
+        class="relative z-10 mt-8 flex flex-col gap-5 border-t border-white/10 pt-6 md:flex-row md:items-center md:justify-between"
+    >
+
+        {{-- AUTHOR --}}
+        <div class="flex items-center gap-4">
+
+            <img
+                src="{{ $author['image'] ?? '' }}"
+                alt="{{ $author['name'] ?? 'Author' }}"
+                class="h-12 w-12 rounded-full border-2 border-blue-500 object-cover shadow-lg"
+            >
+
+            <div>
+
+                <h4 class="font-semibold text-white">
+
+                    {{ $author['name'] ?? 'Anonymous' }}
+
+                </h4>
+
+                <div class="mt-1 flex items-center gap-2 text-sm text-gray-500">
+
+                    <x-prezet.icon-calendar class="size-4" />
+
+                    <time datetime="{{ $article->createdAt->toIso8601String() }}">
+
+                        {{ $article->createdAt->format('F j, Y') }}
+
+                    </time>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- BUTTON --}}
+        <a
+            href="{{ route('prezet.show', $article->slug) }}"
+            class="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-105 hover:from-blue-500 hover:to-indigo-500"
+        >
+            Read Article →
+        </a>
+
     </div>
+
 </article>

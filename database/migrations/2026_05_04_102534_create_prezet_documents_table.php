@@ -11,25 +11,33 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('prezet')->create('documents', function (Blueprint $table) {
+        Schema::connection('prezet')->create('prezet_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->index()->nullable()->unique();
-            $table->string('slug')->index()->unique();
-            $table->string('filepath')->index()->unique();
-            $table->string('category')->index()->nullable();
-            $table->string('content_type')->index();
-            $table->boolean('draft')->default(false)->index();
-            $table->char('hash', length: 32)->index()->unique();
-            $table->jsonb('frontmatter');
-            $table->timestampTz('created_at')->index();
-            $table->timestampTz('updated_at')->index();
 
-            $table->index('filepath', 'hash');
+            $table->string('key')->nullable()->unique()->index();
+            $table->string('slug')->unique()->index();
+            $table->string('filepath')->unique()->index();
+            $table->string('category')->nullable()->index();
+            $table->string('content_type')->index();
+
+            $table->boolean('draft')->default(false)->index();
+            $table->char('hash', 32)->unique()->index();
+
+            $table->json('frontmatter');
+
+            // ✅ FIX: use standard timestamps (IMPORTANT)
+            $table->timestamps();
+
+            // optional extra index (correct syntax)
+            $table->index(['filepath', 'hash']);
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::connection('prezet')->dropIfExists('documents');
+        Schema::connection('prezet')->dropIfExists('prezet_documents');
     }
 };

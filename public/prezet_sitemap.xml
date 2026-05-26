@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://localhost/prezet/tinker-post</loc>
+        <lastmod>2026-05-25T13:46:03+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>http://localhost/prezet/laravel-article</loc>
+        <lastmod>2026-05-25T13:29:33+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
     <url>
         <loc>http://localhost/prezet/posts/my-first-laravel-blog</loc>
-        <lastmod>2026-03-24T04:07:37+00:00</lastmod>
-
-            </url>
+        <lastmod>2026-05-25T13:29:14+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
     <url>
         <loc>http://localhost/prezet/posts/the-future-of-artificial-intelligence</loc>
-        <lastmod>2026-03-24T05:37:35+00:00</lastmod>
-
-            </url>
+        <lastmod>2026-05-25T13:29:14+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
 </urlset>
