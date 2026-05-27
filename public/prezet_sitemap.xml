@@ -2,25 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>http://localhost/prezet/tinker-post</loc>
-        <lastmod>2026-05-25T13:46:03+00:00</lastmod>
+        <lastmod>2026-05-27T09:02:47+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>http://localhost/prezet/laravel-article</loc>
-        <lastmod>2026-05-25T13:29:33+00:00</lastmod>
+        <lastmod>2026-05-27T09:01:49+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>http://localhost/prezet/posts/my-first-laravel-blog</loc>
-        <lastmod>2026-05-25T13:29:14+00:00</lastmod>
+        <lastmod>2026-05-27T09:01:49+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>http://localhost/prezet/posts/the-future-of-artificial-intelligence</loc>
-        <lastmod>2026-05-25T13:29:14+00:00</lastmod>
+        <lastmod>2026-05-27T09:01:49+00:00</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>

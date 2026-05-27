@@ -18,21 +18,39 @@ class ShowController
             abort(404, 'Document not found');
         }
 
+        // NEW: increment views
+        $doc->increment('views');
+
         $md = Prezet::getMarkdown($doc->filepath);
-        $html = Prezet::parseMarkdown($md)->getContent();
-        $docData = Prezet::getDocumentDataFromFile($doc->filepath);
+
+        $html = Prezet::parseMarkdown($md)
+            ->getContent();
+
+        $docData = Prezet::getDocumentDataFromFile(
+            $doc->filepath
+        );
+
+        // RELATED POSTS
+        $relatedPosts = Document::query()
+            ->where('content_type', 'article')
+            ->where('draft', false)
+            ->where('category', $doc->category)
+            ->where('id', '!=', $doc->id)
+            ->limit(3)
+            ->get();
 
         if ($docData->contentType === 'category') {
 
-            $docs = app(Document::class)::query()
+            $docs = Document::query()
                 ->where('content_type', 'article')
                 ->where('draft', false)
                 ->where('category', $doc->category)
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-            $docsData = $docs->map(fn ($doc) =>
-                app(DocumentData::class)::fromModel($doc)
+            $docsData = $docs->map(
+                fn($doc) =>
+                DocumentData::fromModel($doc)
             );
 
             return view('prezet.category', [
@@ -43,11 +61,28 @@ class ShowController
         }
 
         return view('prezet.show', [
+
             'document' => $docData,
+
             'body' => $html,
-            'linkedData' => json_encode(Prezet::getLinkedData($docData)),
-            'headings' => Prezet::getHeadings($html),
-            'author' => config('prezet.authors.' . ($docData->frontmatter->author ?? null)),
+
+            'linkedData' => json_encode(
+                Prezet::getLinkedData($docData)
+            ),
+
+            'headings' => Prezet::getHeadings(
+                $html
+            ),
+
+            'author' => config(
+                'prezet.authors.' .
+                ($docData->frontmatter->author ?? null)
+            ),
+
+            'relatedPosts' => $relatedPosts,
+
+            // NEW
+            'views' => $doc->views
         ]);
     }
-}
+}   

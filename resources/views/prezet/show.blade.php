@@ -1,24 +1,27 @@
 @php
 
-    use App\Models\Like;
+use App\Models\Like;
 
-    $authorKey = $document->frontmatter->author ?? null;
+$authorKey = $document->frontmatter->author ?? null;
 
-    $author = $authorKey
-        ? config('prezet.authors.' . $authorKey)
-        : null;
+$author = $authorKey
+? config('prezet.authors.' . $authorKey)
+: null;
 
-    $totalLikes = Like::where('document_id', $document->id)->count();
+$totalLikes = Like::where(
+    'document_id',
+    $document->id
+)->count();
 
 @endphp
 
 <x-prezet.template>
 
     @seo([
-        'title' => $document->frontmatter->title ?? 'Untitled',
-        'description' => $document->frontmatter->excerpt ?? '',
-        'url' => route('prezet.show', ['slug' => $document->slug]),
-        'image' => $document->frontmatter->image ?? asset('default.png'),
+    'title' => $document->frontmatter->title ?? 'Untitled',
+    'description' => $document->frontmatter->excerpt ?? '',
+    'url' => route('prezet.show', ['slug' => $document->slug]),
+    'image' => $document->frontmatter->image ?? asset('default.png'),
     ])
 
     <div class="max-w-3xl mx-auto py-10">
@@ -43,6 +46,19 @@
 
         </div>
 
+        {{-- READING TIME + VIEWS --}}
+        <div class="flex items-center gap-5 text-sm text-gray-500 mt-2">
+
+            <span>
+                ⏱️ {{ readingTime($body) }}
+            </span>
+
+            <span>
+                👁️ {{ $views }} Views
+            </span>
+
+        </div>
+
         {{-- CONTENT --}}
         <article class="prose dark:prose-invert mt-6 max-w-none">
             {!! $body !!}
@@ -51,19 +67,19 @@
         {{-- TAGS --}}
         @if(!empty($document->frontmatter->tags))
 
-            <div class="mt-6 flex flex-wrap gap-2">
+        <div class="mt-6 flex flex-wrap gap-2">
 
-                @foreach($document->frontmatter->tags as $tag)
+            @foreach($document->frontmatter->tags as $tag)
 
-                    <span class="bg-gray-200 dark:bg-gray-700 px-3 py-1 text-xs rounded">
+            <span class="bg-gray-200 dark:bg-gray-700 px-3 py-1 text-xs rounded">
 
-                        {{ $tag }}
+                {{ $tag }}
 
-                    </span>
+            </span>
 
-                @endforeach
+            @endforeach
 
-            </div>
+        </div>
 
         @endif
 
@@ -76,14 +92,17 @@
 
                 <input
                     type="hidden"
+                    name="_token"
+                    value="{{ csrf_token() }}">
+
+                <input
+                    type="hidden"
                     name="document_id"
-                    value="{{ $document->id }}"
-                >
+                    value="{{ $document->id }}">
 
                 <button
                     type="submit"
-                    class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded"
-                >
+                    class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded">
                     ❤️ Like
                 </button>
 
@@ -99,20 +118,40 @@
 
         </div>
 
-        {{-- AUTHOR BOX --}}
-        <div class="mt-10 p-5 bg-gray-100 dark:bg-gray-800 rounded">
+        {{-- RELATED ARTICLES --}}
+        <div class="mt-12">
 
-            <h3 class="font-bold text-lg dark:text-white">
+            <h2 class="text-2xl font-bold mb-4 dark:text-white">
+                Related Articles
+            </h2>
 
-                {{ $author['name'] ?? 'Author' }}
+            @forelse($relatedPosts as $post)
 
-            </h3>
+            <div class="border p-4 rounded mb-3 dark:border-gray-700">
 
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
+                <a
+                    href="{{ route('prezet.show', $post->slug) }}"
+                    class="font-semibold hover:text-blue-500">
 
-                {{ $author['bio'] ?? 'No bio available' }}
+                    {{ $post->frontmatter->title ?? 'Untitled' }}
 
+                </a>
+
+                <p class="text-sm text-gray-500 mt-2">
+
+                    {{ $post->frontmatter->excerpt ?? '' }}
+
+                </p>
+
+            </div>
+
+            @empty
+
+            <p class="text-gray-500">
+                No related posts found.
             </p>
+
+            @endforelse
 
         </div>
 
